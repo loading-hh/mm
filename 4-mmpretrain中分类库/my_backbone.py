@@ -4,6 +4,22 @@ import torch.nn.functional as F
 
 from mmpretrain.registry import MODELS
 from mmpretrain.models.backbones.base_backbone import BaseBackbone
+from mmpretrain.models import ImageClassifier
+
+@MODELS.register_module()
+class MyClassifier(ImageClassifier):
+    def __init__(self, backbone, neck = None, head = None, pretrained = None, train_cfg = None, data_preprocessor = None, init_cfg = None):
+        super().__init__(backbone, neck, head)
+        if data_preprocessor is None:
+            data_preprocessor = dict(type='BaseDataPreprocessor')
+        if isinstance(data_preprocessor, nn.Module):
+            self.data_preprocessor = data_preprocessor
+        elif isinstance(data_preprocessor, dict):
+            self.data_preprocessor = MODELS.build(data_preprocessor)
+        else:
+            raise TypeError('data_preprocessor should be a `dict` or '
+                            f'`nn.Module` instance, but got '
+                            f'{type(data_preprocessor)}')
 
 class Restidual(nn.Module):
     def __init__(self, input_channels, num_channels, use_1x1conv = False, strides = 1, **kwargs):
@@ -43,7 +59,7 @@ class MyResNet18_BackBone(BaseBackbone):
     def __init__(self, input_channels):
         super().__init__()
         self.input_channels = input_channels
-        self.b1 = nn.Sequential(nn.Conv2d(self.input_channels, 64, kernel_size=7, stride=2, padding=3),
+        self.b1 = nn.Sequential(nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
                    nn.BatchNorm2d(64), nn.ReLU(),
                    nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
         self.b2 = nn.Sequential(*resnet_block(64, 64, 2, first_block = False))
@@ -58,3 +74,8 @@ class MyResNet18_BackBone(BaseBackbone):
         x = self.b4(x)
         x = self.b5(x)
         return x
+
+if __name__ == "__main__":
+    model = MyResNet18_BackBone(3)
+    for i in model.parameters():
+        print(i)
