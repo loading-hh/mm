@@ -40,6 +40,7 @@ optim_wrapper = dict(
         lr=0.001))
 
 val_evaluator = dict(type='Accuracy')
+visualizer=dict(type='Visualizer', vis_backends=[dict(type='TensorboardVisBackend')])
 default_hooks = dict(
     checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=2))
 launcher = 'none'

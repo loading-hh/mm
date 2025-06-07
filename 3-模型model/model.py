@@ -21,9 +21,9 @@ class MyDataPre(nn.Module):
     def __init__(self):
         super().__init__()
     
-    def forward(self, data, train = True):
+    def forward(self, data, training = True):
         data = list(_data.cuda() for _data in data)
-        if train is not True:
+        if training is not True:
             imgs, labels = data
             imgs = imgs * 1.0
             return tuple([imgs, labels])  #模型要的是浮点型，不能是整形。

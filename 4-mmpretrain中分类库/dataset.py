@@ -29,12 +29,13 @@ class MyDataPre(nn.Module):
     def __init__(self):
         super().__init__()
     
-    def forward(self, datas, train = True):
+    def forward(self, datas, training = True):
         
         datas["inputs"] = datas["inputs"].cuda()
-        for label in datas["data_samples"]:
-            label.gt_label = label.gt_label.cuda()
-        if train is not True:
+        if training is True:
+            for label in datas["data_samples"]:
+                label.gt_label = label.gt_label.cuda()
+        if training is not True:
             datas["inputs"] = datas["inputs"] * 1.0
             return datas  #模型要的是浮点型，不能是整形。
         

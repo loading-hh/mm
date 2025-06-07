@@ -37,7 +37,7 @@ test_pipeline = [
 
 train_dataloader = dict(dataset = dict(
                                         type = "MyDataset", 
-                                        data_root = r"/home/data1/wjh/FashionMNIST/train",
+                                        data_root = r"e:\BaiduNetdiskDownload\数据集\FashionMNIST/train",
                                         ann_file = r"annotation/annotations.txt",
                                         pipeline = train_pipeline), 
                         sampler = dict(type = "DefaultSampler", shuffle = True),
@@ -47,7 +47,7 @@ train_dataloader = dict(dataset = dict(
 
 
 val_dataloader = dict(dataset = dict(type = "MyDataset", 
-                                    data_root = r"/home/data1/wjh/FashionMNIST/test",
+                                    data_root = r"e:\BaiduNetdiskDownload\数据集\FashionMNIST/test",
                                     ann_file = r"annotation/annotations.txt",
                                     pipeline = test_pipeline), 
                         sampler = dict(type = "DefaultSampler", shuffle = True),
